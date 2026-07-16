@@ -288,9 +288,9 @@ muteBtn.addEventListener('click', () => {
     const scale = 100 / maxDim;
     mesh.scale.setScalar(scale);
 
-    mesh.rotation.x = THREE.MathUtils.degToRad(6.x);
-    mesh.rotation.y = THREE.MathUtils.degToRad(-180.y);
-    mesh.rotation.z = THREE.MathUtils.degToRad(0.z);
+    mesh.rotation.x = 6;
+    mesh.rotation.y = -180;
+    mesh.rotation.z = 0;
 
     group.add(mesh);
   }
