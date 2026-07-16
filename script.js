@@ -248,7 +248,7 @@ muteBtn.addEventListener('click', () => {
   // usan el eje Z como "arriba", pero three.js usa el eje Y como "arriba",
   // por eso el modelo puede aparecer boca abajo o de lado al cargarlo.
   // Ajusta estos valores (en grados) hasta que se vea bien.
-  const ROTATION_FIX_DEG = { x: 180, y: 0, z: 0 };
+  const ROTATION_FIX_DEG = { x: 0, y: 112, z: 0 };
 
   let mesh = null;
   let impulseSpin = 0;
