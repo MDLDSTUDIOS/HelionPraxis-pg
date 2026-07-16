@@ -244,6 +244,12 @@ muteBtn.addEventListener('click', () => {
   const group = new THREE.Group();
   scene.add(group);
 
+  // Corrección de orientación del STL: muchos programas de modelado
+  // usan el eje Z como "arriba", pero three.js usa el eje Y como "arriba",
+  // por eso el modelo puede aparecer boca abajo o de lado al cargarlo.
+  // Ajusta estos valores (en grados) hasta que se vea bien.
+  const ROTATION_FIX_DEG = { x: 180, y: 0, z: 0 };
+
   let mesh = null;
   let impulseSpin = 0;
   let loaded = false;
@@ -281,6 +287,10 @@ muteBtn.addEventListener('click', () => {
     const maxDim = Math.max(dims.x, dims.y, dims.z) || 1;
     const scale = 100 / maxDim;
     mesh.scale.setScalar(scale);
+
+    mesh.rotation.x = THREE.MathUtils.degToRad(ROTATION_FIX_DEG.x);
+    mesh.rotation.y = THREE.MathUtils.degToRad(ROTATION_FIX_DEG.y);
+    mesh.rotation.z = THREE.MathUtils.degToRad(ROTATION_FIX_DEG.z);
 
     group.add(mesh);
   }
