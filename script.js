@@ -338,6 +338,69 @@ muteBtn.addEventListener('click', () => {
     impulseSpin += 0.9;
   };
 
+  /* ----------------------------------------------------------
+     PANEL DE AJUSTE DE ORIENTACIÓN (temporal / herramienta de ayuda)
+     Presiona la tecla "O" para mostrar/ocultar tres deslizadores
+     que rotan el modelo en vivo. Cuando encuentres el ángulo
+     correcto, copia los valores que aparecen abajo y reemplaza
+     ROTATION_FIX_DEG más arriba en este archivo con esos números.
+     Una vez que tengas los valores correctos y los hayas fijado
+     arriba, puedes borrar todo este bloque completo si ya no lo
+     necesitas — no afecta nada más de la página.
+     ---------------------------------------------------------- */
+  (function setupOrientationPanel(){
+    const panel = document.createElement('div');
+    panel.id = 'orientPanel';
+    panel.style.cssText = `
+      position:fixed; bottom:20px; right:20px; z-index:50;
+      background:rgba(20,12,32,0.88); border:1px solid rgba(197,181,255,0.3);
+      border-radius:12px; padding:14px 16px; font-family:'Space Mono',monospace;
+      font-size:11px; color:#e6def7; width:220px; display:none;
+      backdrop-filter: blur(10px);
+    `;
+    panel.innerHTML = `
+      <div style="margin-bottom:8px; opacity:0.75;">ajustar orientación · tecla O</div>
+      <label style="display:block; margin-bottom:6px;">X <span id="ovx">0</span>°<br>
+        <input type="range" min="-180" max="180" value="${ROTATION_FIX_DEG.x}" id="rotX" style="width:100%;"></label>
+      <label style="display:block; margin-bottom:6px;">Y <span id="ovy">0</span>°<br>
+        <input type="range" min="-180" max="180" value="${ROTATION_FIX_DEG.y}" id="rotY" style="width:100%;"></label>
+      <label style="display:block; margin-bottom:8px;">Z <span id="ovz">0</span>°<br>
+        <input type="range" min="-180" max="180" value="${ROTATION_FIX_DEG.z}" id="rotZ" style="width:100%;"></label>
+      <div style="opacity:0.6; margin-bottom:4px;">copia esto al código:</div>
+      <code id="rotCode" style="display:block; color:#c4b0ff; word-break:break-all;"></code>
+    `;
+    document.body.appendChild(panel);
+
+    const rotX = panel.querySelector('#rotX');
+    const rotY = panel.querySelector('#rotY');
+    const rotZ = panel.querySelector('#rotZ');
+    const ovx = panel.querySelector('#ovx');
+    const ovy = panel.querySelector('#ovy');
+    const ovz = panel.querySelector('#ovz');
+    const rotCode = panel.querySelector('#rotCode');
+
+    function applyLive(){
+      const x = parseInt(rotX.value, 10);
+      const y = parseInt(rotY.value, 10);
+      const z = parseInt(rotZ.value, 10);
+      ovx.textContent = x; ovy.textContent = y; ovz.textContent = z;
+      rotCode.textContent = `{ x: ${x}, y: ${y}, z: ${z} }`;
+      if (mesh){
+        mesh.rotation.x = THREE.MathUtils.degToRad(x);
+        mesh.rotation.y = THREE.MathUtils.degToRad(y);
+        mesh.rotation.z = THREE.MathUtils.degToRad(z);
+      }
+    }
+    [rotX, rotY, rotZ].forEach(el => el.addEventListener('input', applyLive));
+    applyLive();
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'o' || e.key === 'O'){
+        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+      }
+    });
+  })();
+
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const baseSpeed = reduceMotion ? 0.0015 : 0.004;
 
