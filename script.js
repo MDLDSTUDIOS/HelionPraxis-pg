@@ -21,6 +21,7 @@ const QUESTIONS = [
   "Si fueras un superhéroe, ¿cuál sería tu superpoder?",
   "¿Qué harías si un usuario te falta al respeto?",
   "¿Crees en la suerte?",
+   "¡¡MODO FIESTA!!",
   "¿Qué opinas de Nueva Concepción?",
   "¿Qué opinas del INNCO?",
   "¿Prefieres el frío o el calor?",
